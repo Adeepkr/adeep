@@ -1,41 +1,48 @@
 from flask import Flask, render_template, request
 from flask_mysqldb import MySQL
 import mysql.connector
-​
+import logging
+
 app = Flask(__name__)
-​
-​
-app.config['MYSQL_HOST'] = ''
-app.config['MYSQL_USER'] = ''
-app.config['MYSQL_PASSWORD'] = ''
+logging.basicConfig(filename='flask.log', level=logging.INFO,format='%(levelname)s:%(message)s')
+logging.basicConfig(filename='flask.log', level=logging.DEBUG,format='%(levelname)s:%(message)s')
+logging.basicConfig(filename='flask.log', level=logging.WARNING,format='%(levelname)s:%(message)s')
+logging.basicConfig(filename='flask.log', level=logging.ERROR,format='%(levelname)s:%(message)s')
+logging.basicConfig(filename='flask.log', level=logging.CRITICAL,format='%(levelname)s:%(message)s')
+
+
+
+app.config['MYSQL_HOST'] = 'mysql2018.cepbobatridn.us-east-1.rds.amazonaws.com'
+app.config['MYSQL_USER'] = 'Mysql2018'
+app.config['MYSQL_PASSWORD'] = 'Mysql2018123'
 app.config['MYSQL_DB'] ='regform'
-​
+
 mydb = mysql.connector.connect(
-  host="",
-  user="",
-  password=""
+  host="mysql2018.cepbobatridn.us-east-1.rds.amazonaws.com",
+  user="Mysql2018",
+  password="Mysql2018123"
 )
-​
+
 mycursor = mydb.cursor()
-​
+
 mycursor.execute("CREATE DATABASE regform")
-​
-​
+
+
 mydb = mysql.connector.connect(
-  host="",
-  user="",
-  password="",
+  host="mysql2018.cepbobatridn.us-east-1.rds.amazonaws.com",
+  user="Mysql2018",
+  password="Mysql2018123",
   database="regform"
 )
-​
+
 mycursor = mydb.cursor()
-​
+
 mycursor.execute("CREATE TABLE userdata(name VARCHAR(150), age INT(3), email VARCHAR(150), mobile VARCHAR(10), location VARCHAR(100));")
-​
-​
+
+
 mysql = MySQL(app)
-​
-​
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == "POST":
@@ -51,16 +58,16 @@ def index():
         cur.close()
         return 'success'
     return render_template('index.html')
-​
-​
+
+
 @app.route('/users')
 def users():
     cur =mysql.connection.cursor()
     resultValue = cur.execute("SELECT * FROM userdata")
     if resultValue > 0:
         usersDetails = cur.fetchall()
-​
+
         return render_template('users.html',usersDetails=usersDetails)
-​
+
 if __name__ == '__main__':
   app.run(host="0.0.0.0",port=80)
