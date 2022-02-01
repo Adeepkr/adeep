@@ -14,7 +14,7 @@ Resources:
         #!/bin/bash
         sudo yum update -y
         sudo yum install python-pip git mysql -y
-        sudo git clone "https://github.com/rajesh499/finewith.git"
+        sudo git clone "https://github.com/Adeepkr/adeep.git"
         pip pip3 install flask
         cd finewith
         python3 appl.py
